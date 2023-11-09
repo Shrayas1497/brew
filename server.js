@@ -2,13 +2,13 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
-// Define the MongoDB connection
+
 mongoose.connect('mongodb+srv://shrayas:lucifer@cluster0.gwduk9a.mongodb.net/Book', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// Check the connection
+
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
@@ -25,8 +25,8 @@ const Book = mongoose.model('Book', bookSchema);
 
 app.get('/books', async (req, res) => {
   try {
-    const title = req.query.title; // Get the title from the query parameter
-    const books = await Book.find({}).exec(); // Construct the query object
+    const title = req.query.title; 
+    const books = await Book.find({}).exec(); 
 
     res.json(books);
   } catch (error) {
@@ -38,14 +38,14 @@ app.post('/api/books', async (req, res) => {
   try {
     const { title, author, summary } = req.body;
 
-    // Create a new book using the Book model
+    
     const newBook = new Book({
       title,
       author,
       summary,
     });
 
-    // Save the new book to the database
+    
     const savedBook = await newBook.save();
 
     res.status(201).json(savedBook);
@@ -59,8 +59,8 @@ app.post('/api/books', async (req, res) => {
 
 app.get('/api/books/:id', async (req, res) => {
   try {
-    const bookId = req.params.id; // Retrieve the book ID from the route parameter
-    const book = await Book.findById(bookId).exec(); // Use findById to find the book by its ID
+    const bookId = req.params.id; 
+    const book = await Book.findById(bookId).exec(); 
 
     if (!book) {
       res.status(404).json({ message: "Book not found" });
@@ -75,7 +75,7 @@ app.get('/api/books/:id', async (req, res) => {
 });
 app.put('/api/books/:id', async (req, res) => {
   try {
-    const bookId = req.params.id; // Retrieve the book ID from the route parameter
+    const bookId = req.params.id; 
     const { title, author, summary } = req.body;
 
     // Find the book by its ID and update its details
@@ -94,7 +94,7 @@ app.put('/api/books/:id', async (req, res) => {
 
 app.delete('/api/books/:id', async (req, res) => {
   try {
-    const bookId = req.params.id; // Retrieve the book ID from the route parameter
+    const bookId = req.params.id; 
 
     // Find the book by its ID and remove it
     const deletedBook = await Book.findByIdAndRemove(bookId).exec();
